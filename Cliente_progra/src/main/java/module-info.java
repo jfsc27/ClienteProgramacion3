@@ -3,6 +3,7 @@ module proyectos.cliente_progra {
     requires javafx.fxml;
 
 
-    opens proyectos.cliente_progra to javafx.fxml;
-    exports proyectos.cliente_progra;
+    opens com.example to javafx.fxml;
+    exports com.example;
+
 }
