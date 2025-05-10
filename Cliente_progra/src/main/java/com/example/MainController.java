@@ -39,7 +39,7 @@ public class MainController {
     void clickRecibir(ActionEvent event) {
         if (!textPass.getText().isEmpty() && !textUser.getText().isEmpty()) {
             new Thread(() -> {
-                try (Socket socket = new Socket("127.0.0.1", 4040);
+                try (Socket socket = new Socket("192.168.1.70", 4040);
                      BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                      BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
