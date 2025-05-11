@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -24,6 +26,8 @@ public class DashboardviewController{
     private double yOffset = 0;
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean schedulerActivo = false;
+    private ScheduledExecutorService schedulerMensajes = Executors.newSingleThreadScheduledExecutor();
+    private boolean schedulerMensajesActivo = false;
 
     @FXML
     private StackPane PaneSuperior;
@@ -31,7 +35,6 @@ public class DashboardviewController{
     private Label lblNumConectados;
 
     public void inicializar() {
-        schedulerActivo = false;
         PaneSuperior.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -45,6 +48,73 @@ public class DashboardviewController{
         iniciarActualizacionConectados();
         enviarDatosUsuario();
 
+    }
+
+    private void iniciarActualizacionMensajes(String sala_id){
+
+        if (!schedulerMensajesActivo) {
+            schedulerMensajes = Executors.newScheduledThreadPool(1);
+            schedulerMensajesActivo = true;
+
+            schedulerMensajes.scheduleAtFixedRate(() -> {
+                try {
+
+                    int columna_user = 1;
+                    int columna_envia = 0;
+                    int fila = 0;
+                    String mensajes = SocketCliente.getInstancia().enviarComando("actualizar_mensajes_sala," + sala_id);
+
+                    if (mensajes != null && !mensajes.isEmpty() && !mensajes.equals(ultimoEstadoMensajes)) {
+                        ultimoEstadoMensajes = mensajes;
+                        String[] mensajes_sala = mensajes.split("\\|");
+                        Platform.runLater(()->  gridConversacion.getChildren().clear());
+
+                        for(String mensaje: mensajes_sala){
+
+                            String[] datos_mensaje = mensaje.split("~");
+
+                            if (datos_mensaje.length == 3) {
+
+                                String fecha = datos_mensaje[0];
+                                String user_id_msj = datos_mensaje[1];
+                                String texto = datos_mensaje[2];
+                                String nombre_user = SocketCliente.getInstancia().enviarComando("nombre_user," + user_id_msj);
+
+                                final int fColumna_user = columna_user;
+                                final int fColumna_envia = columna_envia;
+                                final int fFila = fila;
+
+                                if (this.user_id.equals(user_id_msj)) {
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala_user.fxml"));
+                                    AnchorPane pane = loader.load();
+                                    CasillaMensajeViewController controller = loader.getController();
+                                    controller.setData(fecha, texto, nombre_user);
+
+                                    Platform.runLater(() -> {
+                                        gridConversacion.add(pane, fColumna_user, fFila);
+                                    });
+                                    fila++;
+                                }else{
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala.fxml"));
+                                    AnchorPane pane = loader.load();
+                                    CasillaMensajeViewController controller = loader.getController();
+                                    controller.setData(fecha, texto, nombre_user);
+
+                                    Platform.runLater(() -> {
+                                        gridConversacion.add(pane, fColumna_envia, fFila);
+                                    });
+                                    fila++;
+                                }
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    Platform.runLater(() -> lblNumConectados.setText("Error de conexión"));
+                    e.printStackTrace();
+                }
+            }, 0, 2, TimeUnit.SECONDS);
+        }
     }
 
     private void iniciarActualizacionConectados() {
@@ -69,7 +139,7 @@ public class DashboardviewController{
     public void enviarDatosUsuario() {
         new Thread(() -> {
             try {
-                String datos = "nombre_user," + user + "," + pass;
+                String datos = "nombre_user," + user_id;
                 String nombre = SocketCliente.getInstancia().enviarComando(datos);
 
                 Platform.runLater(() -> labelNombreUser.setText(nombre));
@@ -137,9 +207,11 @@ public class DashboardviewController{
     private GridPane gridExplorar;
 
     private String sala_activa_id;
+    private String nombre_sala_activa;
     private String user;
     private String pass;
     private String user_id;
+    private String ultimoEstadoMensajes = "";
 
     public void mostrarSalas(){
         new Thread(() -> {
@@ -166,7 +238,13 @@ public class DashboardviewController{
                             SalaEnListaViewController controller = loader.getController();
                             controller.setData(nombreSala);
 
-                            boton.setOnAction(event -> {/*mostrarConversacion(sala_id);*/});
+                            boton.setOnAction(event -> {
+                                if (schedulerMensajes != null && !schedulerMensajes.isShutdown()) {
+                                    schedulerMensajes.shutdownNow();
+                                    schedulerMensajesActivo = false;
+                                }
+                                mostrarConversacion(sala_id, nombreSala);
+                            });
                             Platform.runLater(() -> {
                                 gridCanales.add(boton, fColumna, fFila);
                             });
@@ -180,7 +258,14 @@ public class DashboardviewController{
             }
         }).start();
     }
-
+    public void mostrarConversacion(String sala_id, String nombreSala) {
+        this.sala_activa_id = sala_id;
+        this.nombre_sala_activa = nombreSala;
+        labelNombreSala.setText(nombre_sala_activa);
+        iniciarActualizacionMensajes(sala_activa_id);
+        PaneConversacion.setVisible(true);
+        PaneExplorar.setVisible(false);
+    }
     @FXML
     void clickCerrar(ActionEvent event) {
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
@@ -195,10 +280,53 @@ public class DashboardviewController{
 
     @FXML
     void clickExplorar(ActionEvent event) {
+        if (schedulerMensajes != null && !schedulerMensajes.isShutdown()) {
+            schedulerMensajes.shutdownNow();
+            schedulerMensajesActivo = false;
+        }
         PaneExplorar.setVisible(true);
         PaneConversacion.setVisible(false);
+        mostrar_salas_nuevas();
     }
+    public void mostrar_salas_nuevas() {
+        new Thread(() ->{
+            try {
+                int columna = 0;
+                int fila = 0;
+                String comando = "obtener_not_salas," + user_id;
+                String ids = SocketCliente.getInstancia().enviarComando(comando);
+                if (ids != null && !ids.isEmpty()) {
+                    String[] salasIds = ids.split("/");
 
+                    for(String sala_id: salasIds){
+
+                        String comando2 = "nombre_sala_descripcion," + sala_id;
+                        String datos = SocketCliente.getInstancia().enviarComando(comando2);
+
+                        String[] datos_sala = datos.split(",");
+                        String nombreSala = datos_sala[0];
+                        String descripcion = datos_sala[1];
+
+                        if (nombreSala != null && !nombreSala.isEmpty()) {
+                            final int fColumna = columna;
+                            final int fFila = fila;
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/Saña.fxml"));
+                            AnchorPane pane = loader.load();
+
+                            CasillaExplorarSalaViewControler controller = loader.getController();
+                            controller.setData(nombreSala, descripcion, sala_id, user_id);
+                            Platform.runLater(() -> {
+                                gridExplorar.add(pane, fColumna, fFila);
+                            });
+                            fila++;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
     @FXML
     void clickCrear(ActionEvent event) throws IOException {
         abrir_crear_sala();
@@ -225,6 +353,16 @@ public class DashboardviewController{
 
     @FXML
     void clickSalir(ActionEvent event) throws IOException {
+
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdownNow();
+            schedulerActivo = false;
+        }
+        if (schedulerMensajes != null && !schedulerMensajes.isShutdown()) {
+            schedulerMensajes.shutdownNow();
+            schedulerMensajesActivo = false;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/Main.fxml"));
         Parent root = loader.load();
 
@@ -267,8 +405,24 @@ public class DashboardviewController{
     public void reiniciarScheduler() {
         scheduler = Executors.newScheduledThreadPool(1);
     }
+    /*
+     * /////////////////////////// CONVERSACION ////////////////////////////////
+     */
+    @FXML
+    private Button btnEnviar;
+    @FXML
+    private GridPane gridConversacion;
+    @FXML
+    private Label labelNombreSala;
+    @FXML
+    private TextField textEnviarMensaje;
 
-
+    @FXML
+    void clickEnviar(ActionEvent event) throws IOException {
+        if (!textEnviarMensaje.getText().isEmpty()) {
+            String comando = "enviar_mensaje_sala," + textEnviarMensaje.getText() + "," + sala_activa_id;
+            String respuesta = SocketCliente.getInstancia().enviarComando(comando);
+        }
+    }
 }
-
 

@@ -13,7 +13,7 @@ public class SocketCliente {
     private BufferedReader input;
     private BufferedWriter output;
 
-    private final String HOST = "192.168.1.70";
+    private final String HOST = "127.0.0.1";
     private final int PORT = 4040;
 
     private SocketCliente() throws IOException {

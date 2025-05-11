@@ -66,11 +66,11 @@
 }
 .image-view {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
-    -fx-background-radius: 50;   
-    -fx-border-radius: 50;       
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
     -fx-padding: 0;
     -fx-background-color: transparent;
-    -fx-clip-shape: "circle";    
+    -fx-clip-shape: "circle";
 }
 .sala-btn{
     -fx-background-color: #706f77;
@@ -80,6 +80,16 @@
 .sala-btn:hover{
     -fx-background-color: #919096;
     -fx-background-radius: 10;
+    -fx-opacity: 1;
+}
+.enviar-btn{
+    -fx-background-color: #d5b851;
+    -fx-background-radius: 30;
+    -fx-opacity: 1;
+}
+.enviar-btn:hover{
+    -fx-background-color: #ffe070;
+    -fx-background-radius: 30;
     -fx-opacity: 1;
 }
 .rectangle_user{
@@ -207,4 +217,24 @@
     -fx-background-color: rgb(143, 135, 108);
     -fx-background-radius: 20px;
 }
-
+.fondo-mensaje-envia{
+    -fx-background-color: #66520a;
+    -fx-background-radius: 30;
+}
+.fondo-mensaje-user{
+    -fx-background-color: #473a57;
+    -fx-background-radius: 30;
+}
+.fondo-rectangle-user{
+    -fx-fill: #473a57;
+    -fx-arc-width: 60;
+    -fx-arc-height: 60;
+}
+.entrar-sala-btn{
+    -fx-background-color: #7a55a8;
+    -fx-background-radius: 30;
+}
+.entrar-sala-btn:hover{
+    -fx-background-color: #9d70d4;
+    -fx-background-radius: 30;
+}

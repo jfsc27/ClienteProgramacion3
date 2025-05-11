@@ -39,17 +39,12 @@ public class MainController {
     void clickRecibir(ActionEvent event) {
         if (!textPass.getText().isEmpty() && !textUser.getText().isEmpty()) {
             new Thread(() -> {
-                try (Socket socket = new Socket("192.168.1.70", 4040);
-                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-
-                    String datos = textUser.getText() + "," + textPass.getText()+"\n";
+                try {
+                    String datos = textUser.getText() + "," + textPass.getText();
                     System.out.println("Mensaje enviado: " + datos);
 
-                    writer.write(datos);
-                    writer.flush();
+                    String mensaje = SocketCliente.getInstancia().enviarComando(datos);
 
-                    String mensaje = input.readLine();
                     String[] partes = mensaje.split(",",2);
                     String parte1 = partes[0].trim();
                     String parte2 = partes.length > 1 ? partes[1].trim() : "";
@@ -69,10 +64,6 @@ public class MainController {
                             }
                         });
                     }
-
-                    writer.close();
-                    input.close();
-                    socket.close();
 
                 } catch (Exception e) {
                     Platform.runLater(() -> lblMensaje.setText("Error de conexión"));
@@ -111,4 +102,3 @@ public class MainController {
     }
 
 }
-

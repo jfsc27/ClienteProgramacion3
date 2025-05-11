@@ -12,4 +12,3 @@ public class SalaEnListaViewController {
         btnSala.setText(nombre);
     }
 }
-
