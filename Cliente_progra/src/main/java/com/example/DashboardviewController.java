@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -58,57 +60,64 @@ public class DashboardviewController{
 
             schedulerMensajes.scheduleAtFixedRate(() -> {
                 try {
-
                     int columna_user = 1;
                     int columna_envia = 0;
-                    int fila = 0;
                     String mensajes = SocketCliente.getInstancia().enviarComando("actualizar_mensajes_sala," + sala_id);
 
                     if (mensajes != null && !mensajes.isEmpty() && !mensajes.equals(ultimoEstadoMensajes)) {
+
                         ultimoEstadoMensajes = mensajes;
                         String[] mensajes_sala = mensajes.split("\\|");
-                        Platform.runLater(()->  gridConversacion.getChildren().clear());
+                        Platform.runLater(()-> {
+                            int fila = 0;
+                            gridConversacion.getChildren().clear();
+                            for(String mensaje: mensajes_sala){
 
-                        for(String mensaje: mensajes_sala){
+                                String[] datos_mensaje = mensaje.split("~");
 
-                            String[] datos_mensaje = mensaje.split("~");
+                                if (datos_mensaje.length == 3) {
 
-                            if (datos_mensaje.length == 3) {
+                                    String fecha = datos_mensaje[0];
+                                    String user_id_msj = datos_mensaje[1];
+                                    String texto = datos_mensaje[2];
+                                    String nombre_user;
+                                    try {
+                                        FXMLLoader loader;
+                                        nombre_user = SocketCliente.getInstancia().enviarComando("nombre_user," + user_id_msj);
+                                        final int fColumna_user = columna_user;
+                                        final int fColumna_envia = columna_envia;
+                                        final int fFila = fila;
 
-                                String fecha = datos_mensaje[0];
-                                String user_id_msj = datos_mensaje[1];
-                                String texto = datos_mensaje[2];
-                                String nombre_user = SocketCliente.getInstancia().enviarComando("nombre_user," + user_id_msj);
+                                        if (this.user_id.equals(user_id_msj)) {
+                                            loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala_user.fxml"));
+                                            AnchorPane pane = loader.load();
+                                            CasillaMensajeViewController controller = loader.getController();
+                                            controller.setData(fecha, texto, nombre_user);
 
-                                final int fColumna_user = columna_user;
-                                final int fColumna_envia = columna_envia;
-                                final int fFila = fila;
 
-                                if (this.user_id.equals(user_id_msj)) {
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala_user.fxml"));
-                                    AnchorPane pane = loader.load();
-                                    CasillaMensajeViewController controller = loader.getController();
-                                    controller.setData(fecha, texto, nombre_user);
+                                            gridConversacion.add(pane, fColumna_user, fFila);
 
-                                    Platform.runLater(() -> {
-                                        gridConversacion.add(pane, fColumna_user, fFila);
-                                    });
-                                    fila++;
-                                }else{
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala.fxml"));
-                                    AnchorPane pane = loader.load();
-                                    CasillaMensajeViewController controller = loader.getController();
-                                    controller.setData(fecha, texto, nombre_user);
+                                            fila++;
+                                        }else{
+                                            loader = new FXMLLoader(getClass().getResource("/com/example/casilla_sala.fxml"));
+                                            AnchorPane pane = loader.load();
+                                            CasillaMensajeViewController controller = loader.getController();
+                                            controller.setData(fecha, texto, nombre_user);
 
-                                    Platform.runLater(() -> {
-                                        gridConversacion.add(pane, fColumna_envia, fFila);
-                                    });
-                                    fila++;
+                                            gridConversacion.add(pane, fColumna_envia, fFila);
+
+                                            fila++;
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                        }
+                            PauseTransition pause = new PauseTransition(Duration.millis(50));
+                            pause.setOnFinished(event -> scrollPaneMensajes.setVvalue(1.0));
+                            pause.play();
+                        });
                     }
-
                 } catch (Exception e) {
                     Platform.runLater(() -> lblNumConectados.setText("Error de conexión"));
                     e.printStackTrace();
@@ -416,12 +425,33 @@ public class DashboardviewController{
     private Label labelNombreSala;
     @FXML
     private TextField textEnviarMensaje;
+    @FXML
+    private ScrollPane scrollPaneMensajes;
 
     @FXML
-    void clickEnviar(ActionEvent event) throws IOException {
+    void clickEnviar(ActionEvent event) throws IOException, InterruptedException {
         if (!textEnviarMensaje.getText().isEmpty()) {
-            String comando = "enviar_mensaje_sala," + textEnviarMensaje.getText() + "," + sala_activa_id;
-            String respuesta = SocketCliente.getInstancia().enviarComando(comando);
+            new Thread(() ->{
+                try {
+                    String comando = "enviar_mensaje_sala,"+ sala_activa_id + "," + user_id + "," + textEnviarMensaje.getText();
+                    Platform.runLater(() -> textEnviarMensaje.clear());
+                    String respuesta = SocketCliente.getInstancia().enviarComando(comando);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }else {
+            new Thread(() -> {
+                Platform.runLater(() -> {
+                    textEnviarMensaje.setText("Debes escribir algo antes de enviar");
+                    try {
+                        wait(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    textEnviarMensaje.clear();
+                });
+            }).start();
         }
     }
 }

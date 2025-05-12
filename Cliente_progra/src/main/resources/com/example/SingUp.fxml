@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SingUp">
+   <children>
+      <ImageView fitHeight="37.0" fitWidth="44.0" layoutX="59.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../descargas/usuario%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="60.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../descargas/bloquear.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="60.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../descargas/agregar-usuario.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtNombre" layoutX="213.0" layoutY="128.0" />
+      <TextField fx:id="txtEdad" layoutX="212.0" layoutY="173.0" />
+      <TextField fx:id="txtNombreUsuario" layoutX="213.0" layoutY="219.0" />
+      <TextField fx:id="txtContraseña" layoutX="212.0" layoutY="261.0" />
+      <Text fill="#ac26ff" layoutX="229.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SING-UP">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font></Text>
+      <Text layoutX="140.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" />
+      <Text layoutX="148.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edad" />
+      <Text layoutX="110.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Usuario" />
+      <Text layoutX="131.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
+      <Accordion />
+      <Button fx:id="btnCrearUsuario" layoutX="259.0" layoutY="317.0" mnemonicParsing="false" onAction="#CrearUsuario" text="SingUp" />
+   </children>
+</AnchorPane>

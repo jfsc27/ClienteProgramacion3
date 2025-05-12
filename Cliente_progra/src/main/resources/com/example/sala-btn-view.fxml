@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Font?>
 
-<Button fx:id="btnSala" mnemonicParsing="false" prefHeight="50.0" prefWidth="179.0" styleClass="sala-btn" stylesheets="@EstilosFx/general_style.css" text="NombreSala" textFill="WHITE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.SalaEnListaViewController">
+<Button fx:id="btnSala" mnemonicParsing="false" prefHeight="50.0" prefWidth="172.0" styleClass="sala-btn" stylesheets="@EstilosFx/general_style.css" text="NombreSala" textFill="WHITE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.SalaEnListaViewController">
    <graphic>
       <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
          <image>

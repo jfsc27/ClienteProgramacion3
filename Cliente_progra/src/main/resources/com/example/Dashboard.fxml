@@ -79,9 +79,9 @@
                            </StackPane.margin>
                            <content>
                               <GridPane fx:id="gridCanales" prefHeight="0.0" prefWidth="180.0" vgap="10.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
                               </GridPane>
                            </content>
                         </ScrollPane>
@@ -178,7 +178,7 @@
                   </StackPane>
                   <StackPane prefHeight="512.0" prefWidth="624.0" styleClass="fondo_conversacion">
                      <children>
-                        <StackPane fx:id="PaneExplorar" prefHeight="150.0" prefWidth="200.0">
+                        <StackPane fx:id="PaneExplorar" prefHeight="150.0" prefWidth="200.0" visible="false">
                            <children>
                               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle_explorar" width="623.0">
                                  <StackPane.margin>
@@ -207,15 +207,15 @@
                                  </StackPane.margin>
                                  <content>
                                     <GridPane fx:id="gridExplorar" hgap="10.0" prefHeight="0.0" prefWidth="603.0" vgap="10.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
                                     </GridPane>
                                  </content>
                               </ScrollPane>
                            </children>
                         </StackPane>
-                        <StackPane fx:id="PaneConversacion" prefHeight="150.0" prefWidth="200.0" visible="false">
+                        <StackPane fx:id="PaneConversacion" prefHeight="150.0" prefWidth="200.0">
                            <children>
                               <Rectangle fill="#514859" height="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="624.0">
                                  <StackPane.margin>
@@ -252,16 +252,16 @@
                                     <Insets left="545.0" top="465.0" />
                                  </StackPane.margin>
                               </Button>
-                              <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                              <ScrollPane fx:id="scrollPaneMensajes" prefHeight="200.0" prefWidth="200.0" vvalue="1.0">
                                  <StackPane.margin>
                                     <Insets bottom="69.0" left="5.0" right="5.0" top="69.0" />
                                  </StackPane.margin>
                                  <content>
                                     <GridPane fx:id="gridConversacion" prefHeight="0.0" prefWidth="612.0" vgap="10.0">
-                                       <columnConstraints>
+                                      <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
                                     </GridPane>
                                  </content>
                               </ScrollPane>
