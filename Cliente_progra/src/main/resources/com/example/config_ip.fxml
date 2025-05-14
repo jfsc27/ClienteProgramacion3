@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="308.0" prefWidth="600.0" styleClass="fondo_conversacion" stylesheets="@EstilosFx/general_style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ConfigIpViewController">
+   <children>
+      <StackPane fx:id="PaneSuperior" prefHeight="26.0" prefWidth="600.0" styleClass="fondo_dash">
+         <children>
+            <Button fx:id="btnCuadrito" mnemonicParsing="false" onAction="#clickCuadrito" prefHeight="33.0" prefWidth="41.0" styleClass="minimizar_btn">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="11.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../PlataformaChatPFpruebas/co.edu.uniquindio.elixirpf/demo/src/main/resources/com/example/Imagenes/cuadritos.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="480.0" />
+               </StackPane.margin>
+            </Button>
+            <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#clickCerrar" prefHeight="38.0" prefWidth="39.0" styleClass="cerrar_btn">
+               <graphic>
+                  <ImageView fitHeight="8.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../PlataformaChatPFpruebas/co.edu.uniquindio.elixirpf/demo/src/main/resources/com/example/Imagenes/cerrar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="560.0" />
+               </StackPane.margin>
+            </Button>
+            <Button fx:id="btnMinimizar" mnemonicParsing="false" onAction="#clickMinimizar" opacity="0.88" prefHeight="34.0" prefWidth="36.0" styleClass="minimizar_btn">
+               <graphic>
+                  <ImageView fitHeight="10.0" fitWidth="72.0" opacity="0.64" pickOnBounds="true" preserveRatio="true" styleClass="minimizar_btn">
+                     <image>
+                        <Image url="@../../../../../../../PlataformaChatPFpruebas/co.edu.uniquindio.elixirpf/demo/src/main/resources/com/example/Imagenes/minimizar-signo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="400.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
+      <Label layoutX="201.0" layoutY="126.0" text="Ingrese la direccion Ip del Servidor" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtIp" alignment="CENTER" layoutX="203.0" layoutY="160.0" prefHeight="25.0" prefWidth="195.0" promptText="192.168.1.50" styleClass="field-crear-sala" />
+      <Button fx:id="btnIngresarIp" layoutX="267.0" layoutY="205.0" mnemonicParsing="false" onAction="#clickIngresarIp" prefHeight="33.0" prefWidth="66.0" styleClass="entrar-sala-btn" text="Ingresar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="11.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -9,10 +9,12 @@
 .sign_up_btn{
     -fx-background-color: #eecb5a;
     -fx-background-radius: 15;
+    -fx-opacity: 0.7;
 }
 .sign_up_btn:hover{
-    -fx-background-color: #ffeeb6;
+    -fx-background-color: #eecb5a;
     -fx-background-radius: 15;
+    -fx-opacity: 1;
 }
 .redonda {
     -fx-background-radius: 50;
@@ -237,4 +239,32 @@
 .entrar-sala-btn:hover{
     -fx-background-color: #9d70d4;
     -fx-background-radius: 30;
+}
+.salir-sala-btn{
+    -fx-background-color: #514859;
+    -fx-background-radius: 30;
+}
+.salir-sala-btn:hover{
+    -fx-background-color: #776c81;
+    -fx-background-radius: 30;
+}
+.combo-btn{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0;
+}
+.combo-btn:hover{
+    -fx-background-color: #aaaaaa;
+    -fx-background-radius: 0;
+}
+.combo-btn-cerrar{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0;
+}
+.combo-btn-cerrar:hover{
+    -fx-background-color: #e45959;
+    -fx-background-radius: 0;
+}
+.fondo-blanco{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0;
 }

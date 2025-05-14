@@ -1,10 +1,4 @@
 package com.example;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class CrearSalaViewController {
-    @FXML
+     @FXML
     private Button btnCerrar;
 
     @FXML
@@ -31,8 +25,8 @@ public class CrearSalaViewController {
 
     @FXML
     private TextArea txtAreaDescripcion;
-
-    @FXML
+    
+      @FXML
     private StackPane PaneSuperior;
 
     private String sala_id;
@@ -47,7 +41,7 @@ public class CrearSalaViewController {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
         });
-
+    
         PaneSuperior.setOnMouseDragged(event -> {
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setX(event.getScreenX() - xOffset);
@@ -59,24 +53,19 @@ public class CrearSalaViewController {
 
         if (!fieldNombre.getText().isEmpty() && !txtAreaDescripcion.getText().isEmpty()) {
             new Thread(() -> {
-                try (Socket socket = new Socket("127.0.0.1", 4040);
-                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-
-                    btnCrear.setDisable(true);
-                    String nombre = fieldNombre.getText().replace("\n", "").replace("\r", "");
-                    String descripcion = txtAreaDescripcion.getText().replace("\n", " ").replace("\r", " ");
-                    String datos = "crear_sala," + nombre + "," + descripcion + "," + this.user_id +"\n";
-                    writer.write(datos);
-                    writer.flush();
-
-                    String id = input.readLine();
-                    this.sala_id = id;
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            try {
+                btnCrear.setDisable(true);
+                String nombre = fieldNombre.getText().replace("\n", "").replace("\r", "");
+                String descripcion = txtAreaDescripcion.getText().replace("\n", " ").replace("\r", " ");
+                String datos = "crear_sala," + nombre + "," + descripcion + "," + this.user_id +"\n";
+                String id_cript = SocketCliente.getInstancia().enviarComando(CryptoUtil.getInstance().encriptar(datos));
+                String id = CryptoUtil.getInstance().desencriptar(id_cript);
+                this.sala_id = id;
+    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         }
     }
@@ -112,5 +101,5 @@ public class CrearSalaViewController {
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
-
+    
 }

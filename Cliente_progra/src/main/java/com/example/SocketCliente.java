@@ -13,32 +13,55 @@ public class SocketCliente {
     private BufferedReader input;
     private BufferedWriter output;
 
-    private final String HOST = "127.0.0.1";
-    private final int PORT = 4040;
+    private static String HOST = "127.0.0.1";
+    private static int PORT = 4040;
 
     private SocketCliente() throws IOException {
         conectar();
     }
-
+    /**
+     * Metodo para conectar crear los escritores y lectores en el host y puesto indicados
+     * @throws IOException
+     */
     private void conectar() throws IOException {
         socket = new Socket(HOST, PORT);
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
-
+    /**
+     * Singleton de esta clase, para que todas las conexiones sean de un
+     * mismo canal
+     * @return
+     * @throws IOException
+     */
     public static synchronized SocketCliente getInstancia() throws IOException {
         if (instancia == null || instancia.socket.isClosed()) {
             instancia = new SocketCliente();
         }
         return instancia;
     }
-
+    /**
+     * Metodo para enviar un comando al servidor y esperar la respuesta.
+     * @param comando
+     * @return
+     * @throws IOException
+     */
     public synchronized String enviarComando(String comando) throws IOException {
         output.write(comando + "\n");
         output.flush();
         return input.readLine();
     }
 
+    public static void setHost(String host) {
+        if (instancia != null) {
+            throw new IllegalStateException("No se puede cambiar el HOST después de que la instancia fue creada");
+        }
+        HOST = host;
+    }
+    
+    /**
+     * Metodo para cerrar todas las conexiones cuando sea necesario
+     */
     public void cerrar() {
         try {
             input.close();

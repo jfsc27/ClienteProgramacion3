@@ -1,44 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SingUp">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="379.0" styleClass="fondo_conversacion" stylesheets="@EstilosFx/general_style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.SignUpViewController">
    <children>
-      <ImageView fitHeight="37.0" fitWidth="44.0" layoutX="59.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="txtNombre" layoutX="122.0" layoutY="196.0" styleClass="field-crear-sala" />
+      <ImageView fitHeight="104.0" fitWidth="115.0" layoutX="143.0" layoutY="53.0" opacity="0.53" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../descargas/usuario%20(1).png" />
+            <Image url="@Imagenes/charla.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="60.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../descargas/bloquear.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="60.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../descargas/agregar-usuario.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="txtNombre" layoutX="213.0" layoutY="128.0" />
-      <TextField fx:id="txtEdad" layoutX="212.0" layoutY="173.0" />
-      <TextField fx:id="txtNombreUsuario" layoutX="213.0" layoutY="219.0" />
-      <TextField fx:id="txtContraseña" layoutX="212.0" layoutY="261.0" />
-      <Text fill="#ac26ff" layoutX="229.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SING-UP">
+      <TextField fx:id="txtEdad" layoutX="122.0" layoutY="236.0" styleClass="field-crear-sala" />
+      <TextField fx:id="txtNombreUsuario" layoutX="122.0" layoutY="275.0" styleClass="field-crear-sala" />
+      <TextField fx:id="txtContraseña" layoutX="122.0" layoutY="316.0" styleClass="field-crear-sala" />
+      <Text fill="#d9bbff" layoutX="135.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign-up" wrappingWidth="120.0">
          <font>
-            <Font name="System Bold" size="28.0" />
+            <Font name="System Bold" size="29.0" />
          </font></Text>
-      <Text layoutX="140.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" />
-      <Text layoutX="148.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edad" />
-      <Text layoutX="110.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Usuario" />
-      <Text layoutX="131.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
+      <Text fill="#9e805f" layoutX="58.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" />
+      <Text fill="#9e805f" layoutX="66.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edad" />
+      <Text fill="#9e805f" layoutX="59.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" />
+      <Text fill="#9e805f" layoutX="50.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
       <Accordion />
-      <Button fx:id="btnCrearUsuario" layoutX="259.0" layoutY="317.0" mnemonicParsing="false" onAction="#CrearUsuario" text="SingUp" />
+      <Button fx:id="btnCrearUsuario" layoutX="157.0" layoutY="383.0" mnemonicParsing="false" onAction="#CrearUsuario" opacity="0.54" prefHeight="38.0" prefWidth="66.0" styleClass="sign_up_btn" text="Sign Up" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Button>
+      <StackPane fx:id="PaneSuperior" layoutY="-1.0" prefHeight="25.0" prefWidth="379.0" styleClass="fondo_dash">
+         <children>
+            <Button fx:id="btnMinimizar" mnemonicParsing="false" onAction="#clickMinimizar" opacity="0.88" prefHeight="34.0" prefWidth="36.0" styleClass="minimizar_btn">
+               <graphic>
+                  <ImageView fitHeight="10.0" fitWidth="72.0" opacity="0.64" pickOnBounds="true" preserveRatio="true" styleClass="minimizar_btn">
+                     <image>
+                        <Image url="@Imagenes/minimizar-signo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="180.0" />
+               </StackPane.margin>
+            </Button>
+            <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#clickCerrar" prefHeight="25.0" prefWidth="39.0" styleClass="cerrar_btn">
+               <graphic>
+                  <ImageView fitHeight="8.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Imagenes/cerrar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="340.0" />
+               </StackPane.margin>
+            </Button>
+            <Button fx:id="btnCuadrito" mnemonicParsing="false" onAction="#clickCuadrito" prefHeight="33.0" prefWidth="41.0" styleClass="minimizar_btn">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="11.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Imagenes/cuadritos.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <StackPane.margin>
+                  <Insets left="260.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

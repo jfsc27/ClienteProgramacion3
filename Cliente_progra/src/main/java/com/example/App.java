@@ -14,13 +14,15 @@ import java.io.IOException;
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-
-        FXMLLoader loader =  new FXMLLoader(getClass().getResource("Main.fxml"));
-        stage.setScene(new Scene(loader.load(), 349, 645));
+    public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
+        FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/config_ip.fxml"));
+        stage.setScene(new Scene(loader.load(), 600, 308));
+        ConfigIpViewController controller = loader.getController();
+        controller.inicializar();
         stage.setTitle("JavaFX y Elixir");
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
-
+        
     }
     public static void main(String[] args) {
         launch();
